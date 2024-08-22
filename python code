@@ -1,0 +1,79 @@
+#code
+class ChargingStation:
+    def __init__(self, name, location, available_slots):
+        self.name = name
+        self.location = location
+        self.available_slots = available_slots
+
+    def book_slot(self):
+        if self.available_slots > 0:
+            self.available_slots -= 1
+            print(f"Slot booked at {self.name}. Remaining slots: {self.available_slots}")
+        else:
+            print(f"No available slots at {self.name}.")
+
+
+class ChargingStationFinder:
+    def __init__(self):
+        self.stations = []
+
+    def add_station(self, station):
+        self.stations.append(station)
+
+    def find_stations(self, location=None):
+        filtered_stations = self.stations
+        if location:
+            filtered_stations = [station for station in self.stations if station.location == location]
+        
+        if not filtered_stations:
+            print("No charging stations found.")
+        else:
+            print("Available Charging Stations:")
+            for station in filtered_stations:
+                print(f"{station.name} - Location: {station.location}, Available Slots: {station.available_slots}")
+
+    def book_slot(self, station_name):
+        for station in self.stations:
+            if station.name == station_name:
+                station.book_slot()
+                return
+        print("Charging station not found.")
+
+
+def main():
+    finder = ChargingStationFinder()
+
+    # Adding some charging stations
+    finder.add_station(ChargingStation("Station A", "Location 1", 5))
+    finder.add_station(ChargingStation("Station B", "Location 2", 3))
+    finder.add_station(ChargingStation("Station C", "Location 1", 0))
+
+    while True:
+        print("\n1. Find Charging Stations")
+        print("2. Book Slot")
+        print("3. Exit")
+        choice = input("Choose an option: ")
+
+        if choice == '1':
+            loc = input("Enter location (or press Enter to skip): ")
+            finder.find_stations(loc if loc else None)
+        elif choice == '2':
+            station_name = input("Enter the name of the charging station: ")
+            finder.book_slot(station_name)
+        elif choice == '3':
+            print("Exiting the program.")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+
+Classes:
+ChargingStation: Represents a charging station with attributes for its name, location, and available slots. It has a method to book a slot.
+ChargingStationFinder: Manages a list of charging stations, allowing users to find stations based on location and book slots.
+
+Main Function:
+Initializes the ChargingStationFinder and adds a few sample charging stations.
+Provides a simple console menu for users to find stations or book slots.
+
+User Interaction:
+The user can find charging stations by location or book a slot at a specific station.
